@@ -22,4 +22,8 @@ object MemberRepository {
   def signUp(member: Member): Unit = {
     // do nothing
   }
+
+  def resignApplication(member: Member): Unit = {
+    // do nothing
+  }
 }

@@ -1,5 +1,7 @@
 package domain.member
 
+import core.Session
+
 case class Member(
                    id: Id,
                    name: Name,
@@ -10,4 +12,11 @@ case class Member(
                    contact: Contact,
                    connectionCourse: ConnectionCourse,
                    state: State
-                   )
+                   ) {
+  def resignApplication(): Member = {
+    Member(
+      id, name, mailAddress, gender, birthDate, address, contact, connectionCourse,
+      ResignAppliedState(state.contracted, ResignAppliedDateTime(Session.now))
+    )
+  }
+}
