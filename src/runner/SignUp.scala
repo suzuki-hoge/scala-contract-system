@@ -1,10 +1,12 @@
+package runner
+
 import api.signup.Request
-import datasource.Dummies
+import datasource.{Dummies, Password}
 import domain.credit_card.CreditCard
-import domain.member.{BirthDate, Name}
+import domain.member.{BirthDate, Id, Name}
 import service.member.SignUpService
 
-object SignUp {
+object SignUp extends Errors[Request, (Id, Password)] {
   private def create(name: Name, birthDate: BirthDate, creditCard: CreditCard): Request = Request(
     name,
     Dummies.requestMailAddress,
@@ -43,18 +45,13 @@ object SignUp {
     val (id, password) = SignUpService.apply(request_valid)
     println(id, password)
 
-    List(
-      (request_invalid_name, "already signed up"),
-      (request_invalid_birthDate, "minor is not applicable"),
-      (request_invalid_creditCard, "invalid credit card")
-    ).foreach(
-        t => try {
-          SignUpService.apply(t._1)
-        } catch {
-          case e: AssertionError => assert(e.getMessage.contains(t._2))
-        }
-      )
-
-    println("expected errors")
+    errors(
+      List(
+        (request_invalid_name, "already signed up"),
+        (request_invalid_birthDate, "minor is not applicable"),
+        (request_invalid_creditCard, "invalid credit card")
+      ),
+      SignUpService.apply
+    )
   }
 }

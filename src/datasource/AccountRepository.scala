@@ -9,4 +9,4 @@ object AccountRepository {
 
 }
 
-case class Password(s: String) // todo here?
+case class Password(s: String) // todo: here?

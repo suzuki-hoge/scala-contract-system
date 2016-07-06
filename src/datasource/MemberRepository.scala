@@ -19,12 +19,20 @@ object MemberRepository {
     }
   }
 
+  def findOneBy(id: Id, sup: Id => RuntimeException): Member = {
+    findOneBy(id) match {
+      case Some(x) => x
+      case None => throw sup.apply(id)
+    }
+  }
+
   def signUp(member: Member): Unit = {
     // do nothing
   }
 
-  def resignApplication(member: Member): Unit = {
+  def resignApplication(member: Member): Member = {
     // do nothing
+    member
   }
 
   def resignExecution(member: Member): Unit = {
