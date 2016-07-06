@@ -8,5 +8,6 @@ case class Member(
                    birthDate: BirthDate,
                    address: Address,
                    contact: Contact,
-                   connectionCourse: ConnectionCourse
+                   connectionCourse: ConnectionCourse,
+                   state: State
                    )

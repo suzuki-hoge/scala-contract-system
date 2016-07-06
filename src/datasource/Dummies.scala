@@ -3,7 +3,8 @@ package datasource
 import java.time.LocalDate
 
 import api.signup.RequestMailAddress
-import domain.credit_card.{SecurityCode, ExpirationDate, Number, CreditCard}
+import core.Session
+import domain.credit_card.{CreditCard, ExpirationDate, Number, SecurityCode}
 import domain.member._
 
 object Dummies {
@@ -39,6 +40,8 @@ object Dummies {
     DaytimeTelNumber("03-1111-2222")
   )
 
+  val state_contracted = ContractedState(ContractedDateTime(Session.now))
+
   val member_signedUp = Member(
     id_signedUp,
     name_signedUp,
@@ -47,7 +50,8 @@ object Dummies {
     birthDate_valid,
     address,
     contact,
-    ConnectionCourse.basic
+    ConnectionCourse.basic,
+    state_contracted
   )
 
   val creditCard_valid = CreditCard(
