@@ -19,4 +19,11 @@ case class Member(
       ResignAppliedState(state.contracted, ResignAppliedDateTime(Session.now))
     )
   }
+
+  def resignExecution(): Member = {
+    Member(
+      id, name, mailAddress, gender, birthDate, address, contact, connectionCourse,
+      ResignedState(state.resignApplied, ResignedDateTime(Session.now))
+    )
+  }
 }

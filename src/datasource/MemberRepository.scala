@@ -26,4 +26,8 @@ object MemberRepository {
   def resignApplication(member: Member): Unit = {
     // do nothing
   }
+
+  def resignExecution(member: Member): Unit = {
+    // do nothing
+  }
 }

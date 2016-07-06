@@ -5,6 +5,7 @@ object Resign {
   def main(args: Array[String]): Unit = {
     refer()
     apply()
+    execute()
   }
 
   private def refer(): Unit = {
@@ -43,5 +44,10 @@ object Resign {
       )
 
     println("expected errors")
+  }
+
+  private def execute(): Unit = {
+    ResignService.execute(Dummies.id_signedUp)
+    println("success")
   }
 }
