@@ -18,7 +18,7 @@ object SignUpService {
   }
 
   private def assertApplicable(request: Request): Unit = {
-    assert(MemberRepository.find(request.name).isEmpty, "already signed up")
+    assert(MemberRepository.findOneBy(request.name).isEmpty, "already signed up")
     assert(request.birthDate.isAdult, "minor is not applicable")
     assert(CreditCardRepository.isValid(request.creditCard), "invalid credit card")
   }

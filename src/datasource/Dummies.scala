@@ -10,14 +10,30 @@ import domain.member._
 object Dummies {
   val id_signedUp = Id("1")
 
+  val id_nonMember = Id("2")
+
+  val id_resignApplied = Id("3")
+
+  val id_resigned = Id("4")
+
+  val name_signedUp = Name(
+    Kanji("入会済み"),
+    Kana("にゅうかいずみ")
+  )
+
   val name_nonMember = Name(
     Kanji("非会員"),
     Kana("ひかいいん")
   )
 
-  val name_signedUp = Name(
-    Kanji("入会済み"),
-    Kana("にゅうかいずみ")
+  val name_resignApplied = Name(
+    Kanji("退会申込済み"),
+    Kana("たいかいもうしこみずみ")
+  )
+
+  val name_resigned = Name(
+    Kanji("退会済み"),
+    Kana("たいかいずみ")
   )
 
   val requestMailAddress = RequestMailAddress("biglobe")
@@ -40,7 +56,19 @@ object Dummies {
     DaytimeTelNumber("03-1111-2222")
   )
 
-  val state_contracted = ContractedState(ContractedDateTime(Session.now))
+  val state_contracted = ContractedState(
+    ContractedDateTime(Session.now)
+  )
+
+  val state_resignApplied = ResignAppliedState(
+    state_contracted,
+    ResignAppliedDateTime(Session.now)
+  )
+
+  val state_resigned = ResignedState(
+    state_resignApplied,
+    ResignedDateTime(Session.now)
+  )
 
   val member_signedUp = Member(
     id_signedUp,
@@ -54,6 +82,30 @@ object Dummies {
     state_contracted
   )
 
+  val member_resignApplied = Member(
+    id_resignApplied,
+    name_resignApplied,
+    mailAddress,
+    gender,
+    birthDate_valid,
+    address,
+    contact,
+    ConnectionCourse.basic,
+    state_resignApplied
+  )
+
+  val member_resigned = Member(
+    id_resigned,
+    name_resigned,
+    mailAddress,
+    gender,
+    birthDate_valid,
+    address,
+    contact,
+    ConnectionCourse.basic,
+    state_resigned
+  )
+
   val creditCard_valid = CreditCard(
     Number("1111-2222-3333-4444"),
     ExpirationDate("1016"),
@@ -65,4 +117,6 @@ object Dummies {
     ExpirationDate("1016"),
     SecurityCode("123")
   )
+
+  val password_valid = Password("x")
 }
