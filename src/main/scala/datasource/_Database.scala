@@ -2,7 +2,9 @@ package datasource
 
 import java.io.File
 
+import datasource.credit_card.CreditCardRepository
 import datasource.member.MemberRepository
+import util.Dummies
 
 import scala.slick.driver.SQLiteDriver.simple._
 
@@ -13,7 +15,9 @@ object _Database {
   val db = Database.forURL("jdbc:sqlite:" + DB_PATH, driver = "org.sqlite.JDBC")
 
   private val tables = List(
-    MemberRepository.members
+    MemberRepository.members,
+    CreditCardRepository.creditCards,
+    CreditCardRepository.validCreditCards
   )
 
   def initialize() = {
@@ -21,6 +25,8 @@ object _Database {
       if (dbFile.exists()) dbFile.delete()
 
       tables.foreach(_.ddl.create)
+
+      CreditCardRepository.validCreditCards += Dummies.creditCard_valid.number.s
     }
   }
 }

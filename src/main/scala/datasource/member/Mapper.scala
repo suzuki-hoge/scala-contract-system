@@ -6,10 +6,10 @@ import util.Dummies
 import scala.slick.driver.SQLiteDriver.simple._
 
 object Mapper {
+
   type Row = (String, String, String, String, String)
 
   class _Member(tag: Tag) extends Table[Row](tag, "member") {
-
     def id = column[String]("id", O.PrimaryKey)
 
     def kanji = column[String]("kanji")

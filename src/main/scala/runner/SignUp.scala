@@ -1,6 +1,7 @@
 package runner
 
 import api.signup.Request
+import datasource.credit_card.CreditCardRepository
 import datasource.member.MemberRepository
 import datasource._Database
 import domain.credit_card.CreditCard
@@ -63,5 +64,10 @@ object SignUp extends Errors[Request, (Id, Password)] {
     println(MemberRepository.findOneBy(Id("1")))
     println(MemberRepository.findOneBy(Id("2")))
     println(MemberRepository.findOneBy(Id("3")))
+
+    println(CreditCardRepository.isValid(Dummies.creditCard_valid))
+    println(CreditCardRepository.isValid(Dummies.creditCard_invalid))
+
+    CreditCardRepository.signUp(Id("1"), Dummies.creditCard_valid)
   }
 }
