@@ -1,7 +1,8 @@
 package service.member.authentication
 
-import datasource.{Dummies, Password}
+import datasource.Password
 import domain.member.Id
+import util.Dummies
 
 object AuthenticationService {
   def isValid(id: Id, password: Password): Boolean = {

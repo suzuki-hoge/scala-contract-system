@@ -1,9 +1,9 @@
-package datasource
+package util
 
 import java.time.LocalDate
 
-import api.signup.RequestMailAddress
-import core.Session
+import api.signup.RequestEMail
+import datasource.Password
 import domain.credit_card.{CreditCard, ExpirationDate, Number, SecurityCode}
 import domain.member._
 
@@ -36,15 +36,16 @@ object Dummies {
     Kana("たいかいずみ")
   )
 
-  val requestMailAddress = RequestMailAddress("biglobe")
+  val requestEMail = RequestEMail("heineken")
 
-  val mailAddress = MailAddress.create(requestMailAddress)
+  val eMail = EMail.create(requestEMail)
 
   val gender = Gender("male")
 
-  val birthDate_valid = BirthDate(LocalDate.of(1990, 3, 25))
+  val birthDate = BirthDate(LocalDate.of(1990, 3, 25))
 
-  val birthDate_invalid = BirthDate(LocalDate.of(2000, 3, 25))
+  val birthDate_valid = birthDate
+  val birthDate_invalid = birthDate
 
   val address = Address(
     ZipCode("140-0001"),
@@ -52,8 +53,8 @@ object Dummies {
   )
 
   val contact = Contact(
-    PhoneNumber("090-1111-2222"),
-    DaytimeTelNumber("03-1111-2222")
+    Phone("090-1111-2222"),
+    Daytime("03-1111-2222")
   )
 
   val state_contracted = ContractedState(
@@ -73,36 +74,36 @@ object Dummies {
   val member_signedUp = Member(
     id_signedUp,
     name_signedUp,
-    mailAddress,
+    eMail,
     gender,
     birthDate_valid,
     address,
     contact,
-    ConnectionCourse.basic,
+    Course.basic,
     state_contracted
   )
 
   val member_resignApplied = Member(
     id_resignApplied,
     name_resignApplied,
-    mailAddress,
+    eMail,
     gender,
     birthDate_valid,
     address,
     contact,
-    ConnectionCourse.basic,
+    Course.basic,
     state_resignApplied
   )
 
   val member_resigned = Member(
     id_resigned,
     name_resigned,
-    mailAddress,
+    eMail,
     gender,
     birthDate_valid,
     address,
     contact,
-    ConnectionCourse.basic,
+    Course.basic,
     state_resigned
   )
 

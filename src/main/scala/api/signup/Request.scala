@@ -1,12 +1,12 @@
 package api.signup
 
-import core.Session
+import util.Session
 import domain.credit_card.CreditCard
 import domain.member._
 
 case class Request(
                     name: Name,
-                    requestMailAddress: RequestMailAddress,
+                    requestMailAddress: RequestEMail,
                     gender: Gender,
                     birthDate: BirthDate,
                     address: Address,
@@ -15,7 +15,7 @@ case class Request(
                     ) {
   def creator: Id => Member = {
     id => Member(
-      id, name, MailAddress.create(requestMailAddress), gender, birthDate, address, contact, ConnectionCourse.basic,
+      id, name, EMail.create(requestMailAddress), gender, birthDate, address, contact, Course.basic,
       ContractedState(ContractedDateTime(Session.now))
     )
   }

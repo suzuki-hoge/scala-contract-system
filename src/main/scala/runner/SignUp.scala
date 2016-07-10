@@ -1,15 +1,16 @@
 package runner
 
 import api.signup.Request
-import datasource.{_Database, Dummies, Password}
+import datasource.member.MemberRepository
+import datasource.{Password, _Database}
 import domain.credit_card.CreditCard
 import domain.member.{BirthDate, Id, Name}
-import service.member.SignUpService
+import util.Dummies
 
 object SignUp extends Errors[Request, (Id, Password)] {
   private def create(name: Name, birthDate: BirthDate, creditCard: CreditCard): Request = Request(
     name,
-    Dummies.requestMailAddress,
+    Dummies.requestEMail,
     Dummies.gender,
     birthDate,
     Dummies.address,
@@ -44,16 +45,22 @@ object SignUp extends Errors[Request, (Id, Password)] {
   def main(args: Array[String]): Unit = {
     _Database.initialize()
 
-    val (id, password) = SignUpService.apply(request_valid)
-    println(id, password)
+    val member1 = request_valid.creator.apply(Id("1"))
+    val member2 = request_valid.creator.apply(Id("2"))
+    val member3 = request_valid.creator.apply(Id("3"))
 
-    errors(
-      List(
-        (request_invalid_name, "already signed up"),
-        (request_invalid_birthDate, "minor is not applicable"),
-        (request_invalid_creditCard, "invalid credit card")
-      ),
-      SignUpService.apply
-    )
+    MemberRepository.signUp(member1)
+    MemberRepository.signUp(member2)
+    MemberRepository.signUp(member3)
+
+    println(MemberRepository.findOneBy(Id("1")))
+    println(MemberRepository.findOneBy(Id("2")))
+    println(MemberRepository.findOneBy(Id("3")))
+
+    MemberRepository.resignApplication(member2)
+
+    println(MemberRepository.findOneBy(Id("1")))
+    println(MemberRepository.findOneBy(Id("2")))
+    println(MemberRepository.findOneBy(Id("3")))
   }
 }

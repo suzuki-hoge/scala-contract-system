@@ -2,6 +2,8 @@ package datasource
 
 import java.io.File
 
+import datasource.member.MemberRepository
+
 import scala.slick.driver.SQLiteDriver.simple._
 
 object _Database {

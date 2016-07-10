@@ -1,7 +1,7 @@
 package domain.member
 
-case class Contact(phoneNumber: PhoneNumber, daytimeTelNumber: DaytimeTelNumber)
+case class Contact(phoneNumber: Phone, daytimeTelNumber: Daytime)
 
-case class PhoneNumber(s: String)
+case class Phone(s: String)
 
-case class DaytimeTelNumber(s: String)
+case class Daytime(s: String)

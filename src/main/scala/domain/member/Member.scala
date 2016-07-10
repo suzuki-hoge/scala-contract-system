@@ -1,29 +1,29 @@
 package domain.member
 
-import core.Session
+import util.Session
 
 case class Member(
                    id: Id,
                    name: Name,
-                   mailAddress: MailAddress,
+                   mailAddress: EMail,
                    gender: Gender,
                    birthDate: BirthDate,
                    address: Address,
                    contact: Contact,
-                   connectionCourse: ConnectionCourse,
+                   course: Course,
                    state: State
                    ) {
   def resignApplication(): Member = {
     Member(
-      id, name, mailAddress, gender, birthDate, address, contact, connectionCourse,
+      id, name, mailAddress, gender, birthDate, address, contact, course,
       ResignAppliedState(state.contracted, ResignAppliedDateTime(Session.now))
     )
   }
 
   def resignExecution(): Member = {
     Member(
-      id, name, mailAddress, gender, birthDate, address, contact, connectionCourse,
-      ResignedState(state.resignApplied, ResignedDateTime(Session.now))
+      id, name, mailAddress, gender, birthDate, address, contact, course,
+      ResignedState(state.resignApplied(), ResignedDateTime(Session.now))
     )
   }
 }

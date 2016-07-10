@@ -1,6 +1,7 @@
 package datasource
 
 import domain.member.Id
+import util.Dummies
 
 object AccountRepository {
   def allocate(): (Id, Password) = {
