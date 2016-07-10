@@ -1,7 +1,6 @@
 package service.member.authentication
 
-import datasource.Password
-import domain.member.Id
+import domain.member.{Password, Id}
 import util.Dummies
 
 object AuthenticationService {

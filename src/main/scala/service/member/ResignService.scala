@@ -1,8 +1,7 @@
 package service.member
 
-import datasource.Password
 import datasource.member.MemberRepository
-import domain.member.{Id, Member}
+import domain.member.{Password, Id, Member}
 import service.member.authentication.AuthenticationService
 
 object ResignService {

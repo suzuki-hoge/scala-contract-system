@@ -2,9 +2,9 @@ package runner
 
 import api.signup.Request
 import datasource.member.MemberRepository
-import datasource.{Password, _Database}
+import datasource._Database
 import domain.credit_card.CreditCard
-import domain.member.{BirthDate, Id, Name}
+import domain.member.{Password, BirthDate, Id, Name}
 import util.Dummies
 
 object SignUp extends Errors[Request, (Id, Password)] {
@@ -45,12 +45,13 @@ object SignUp extends Errors[Request, (Id, Password)] {
   def main(args: Array[String]): Unit = {
     _Database.initialize()
 
-    val member1 = request_valid.creator.apply(Id("1"))
-    val member2 = request_valid.creator.apply(Id("2"))
-    val member3 = request_valid.creator.apply(Id("3"))
-
+    val member1 = request_valid.creator.apply(MemberRepository.allocate._1)
     MemberRepository.signUp(member1)
+
+    val member2 = request_valid.creator.apply(MemberRepository.allocate._1)
     MemberRepository.signUp(member2)
+
+    val member3 = request_valid.creator.apply(MemberRepository.allocate._1)
     MemberRepository.signUp(member3)
 
     println(MemberRepository.findOneBy(Id("1")))

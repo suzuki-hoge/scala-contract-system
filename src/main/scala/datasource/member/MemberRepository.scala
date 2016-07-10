@@ -10,6 +10,18 @@ object MemberRepository {
 
   val members = TableQuery[_Member]
 
+  // allocate
+
+  def allocate: (Id, Password) = {
+    val n = _Database.db withSession { implicit session =>
+      members.list.map(_Member.toMember).map(_.id)
+    } match {
+      case Nil => 1
+      case xs => xs.last.s.toInt + 1
+    }
+    (Id(n.toString), Password("ps_%s".format(n)))
+  }
+
   // select
 
   def findOneBy(name: Name): Option[Member] = {

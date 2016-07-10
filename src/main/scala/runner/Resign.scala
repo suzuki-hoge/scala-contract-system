@@ -1,7 +1,6 @@
 package runner
 
-import datasource.Password
-import domain.member.{Id, Member}
+import domain.member.{Password, Id, Member}
 import service.member.ResignService
 import util.Dummies
 

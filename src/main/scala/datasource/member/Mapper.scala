@@ -21,8 +21,6 @@ object Mapper {
     def state = column[String]("state")
 
     def * = (id, kana, kanji, course, state)
-
-    def toId: Id = Id(id.toString())
   }
 
   object _Member {
