@@ -2,7 +2,13 @@ package datasource
 
 import domain.member.{Id, Member, Name}
 
+import scala.slick.driver.SQLiteDriver.simple._
+
 object MemberRepository {
+
+  val members = TableQuery[_Member]
+
+
   def findOneBy(name: Name): Option[Member] = {
     name match {
       case Dummies.name_signedUp => Option(Dummies.member_signedUp)
@@ -27,7 +33,9 @@ object MemberRepository {
   }
 
   def signUp(member: Member): Unit = {
-    // do nothing
+      _Database.db withSession { implicit session =>
+        members.foreach(println)
+      }
   }
 
   def resignApplication(member: Member): Member = {
@@ -38,4 +46,12 @@ object MemberRepository {
   def resignExecution(member: Member): Unit = {
     // do nothing
   }
+}
+
+class _Member(tag: Tag) extends Table[(Int, String)](tag, "member") {
+  def id = column[Int]("id", O.PrimaryKey)
+
+  def name = column[String]("name")
+
+  def * = (id, name)
 }

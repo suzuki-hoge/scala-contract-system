@@ -1,7 +1,7 @@
 package runner
 
 import api.signup.Request
-import datasource.{Dummies, Password}
+import datasource.{_Database, Dummies, Password}
 import domain.credit_card.CreditCard
 import domain.member.{BirthDate, Id, Name}
 import service.member.SignUpService
@@ -42,6 +42,8 @@ object SignUp extends Errors[Request, (Id, Password)] {
   )
 
   def main(args: Array[String]): Unit = {
+    _Database.initialize()
+
     val (id, password) = SignUpService.apply(request_valid)
     println(id, password)
 
