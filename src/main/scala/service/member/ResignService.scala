@@ -2,7 +2,8 @@ package service.member
 
 import datasource.account.AccountRepository
 import datasource.member.MemberRepository
-import domain.member.{Id, Member, Password}
+import domain.account.Password
+import domain.member.{Id, Member}
 
 object ResignService {
   def refer(id: Id, password: Password): Member = {

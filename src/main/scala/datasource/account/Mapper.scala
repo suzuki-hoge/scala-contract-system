@@ -1,5 +1,6 @@
 package datasource.account
 
+import domain.account.Password
 import domain.member._
 
 import scala.slick.driver.SQLiteDriver.simple._

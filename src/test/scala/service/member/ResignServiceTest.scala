@@ -3,7 +3,8 @@ package service.member
 import datasource._Database
 import datasource.account.AccountRepository
 import datasource.member.MemberRepository
-import domain.member.{Id, Password}
+import domain.account.Password
+import domain.member.Id
 import org.scalatest.{BeforeAndAfter, FunSuite}
 
 class ResignServiceTest extends FunSuite with BeforeAndAfter {

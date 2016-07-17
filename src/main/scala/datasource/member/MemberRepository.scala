@@ -2,6 +2,7 @@ package datasource.member
 
 import datasource._Database
 import datasource.member.Mapper.{Row, _Member}
+import domain.account.Password
 import domain.member._
 
 import scala.slick.driver.SQLiteDriver.simple._
@@ -9,18 +10,6 @@ import scala.slick.driver.SQLiteDriver.simple._
 object MemberRepository {
 
   val members = TableQuery[_Member]
-
-  // allocate
-
-  def allocate: (Id, Password) = {
-    val n = _Database.db withSession { implicit session =>
-      members.list.map(_Member.toMember).map(_.id)
-    } match {
-      case Nil => 1
-      case xs => xs.last.s.toInt + 1
-    }
-    (Id(n.toString), Password("ps_%s".format(n)))
-  }
 
   // select
 

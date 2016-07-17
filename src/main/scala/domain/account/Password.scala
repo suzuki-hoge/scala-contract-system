@@ -1,3 +1,3 @@
-package domain.member
+package domain.account
 
 case class Password(s: String)
