@@ -2,6 +2,7 @@ package datasource
 
 import java.io.File
 
+import datasource.account.AccountRepository
 import datasource.credit_card.CreditCardRepository
 import datasource.member.MemberRepository
 
@@ -16,7 +17,8 @@ object _Database {
   private val tables = List(
     MemberRepository.members,
     CreditCardRepository.creditCards,
-    CreditCardRepository.validCreditCards
+    CreditCardRepository.validCreditCards,
+    AccountRepository.accounts
   )
 
   def initialize() = {

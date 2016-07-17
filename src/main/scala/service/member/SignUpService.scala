@@ -1,6 +1,7 @@
 package service.member
 
 import api.member.sign_up.Request
+import datasource.account.AccountRepository
 import datasource.credit_card.CreditCardRepository
 import datasource.member.MemberRepository
 import domain.member.{Id, Password}
@@ -14,6 +15,7 @@ object SignUpService {
 
       MemberRepository.signUp(member)
       CreditCardRepository.signUp(id, request.creditCard)
+      AccountRepository.signUp(id, password)
 
       (id, password)
     }

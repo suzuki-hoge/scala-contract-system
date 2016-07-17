@@ -1,8 +1,9 @@
 package service.member
 
 import datasource._Database
+import datasource.account.AccountRepository
 import datasource.member.MemberRepository
-import domain.member.Id
+import domain.member.{Password, Id}
 import org.scalatest.{BeforeAndAfter, FunSuite}
 
 class SignUpServiceTest extends FunSuite with BeforeAndAfter {
@@ -12,9 +13,12 @@ class SignUpServiceTest extends FunSuite with BeforeAndAfter {
   }
 
   test("sign up") {
+    assert(!AccountRepository.isExists(Id("1"), Password("ps_1")))
+
     SignUpService.apply(SignUpRequest.valid)
 
     assert(MemberRepository.findOneBy(Id("1")).get.name == SignUpRequest.valid.name)
+    assert(AccountRepository.isExists(Id("1"), Password("ps_1")))
   }
 
   test("signed up name") {
