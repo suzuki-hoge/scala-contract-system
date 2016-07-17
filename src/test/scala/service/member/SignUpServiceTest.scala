@@ -12,6 +12,8 @@ class SignUpServiceTest extends FunSuite with BeforeAndAfter {
     _Database.initialize()
   }
 
+  // OK
+
   test("sign up") {
     assert(!AccountRepository.isExists(Id("1"), Password("ps_1")))
 
@@ -20,6 +22,8 @@ class SignUpServiceTest extends FunSuite with BeforeAndAfter {
     assert(MemberRepository.findOneBy(Id("1")).get.name == SignUpRequest.valid.name)
     assert(AccountRepository.isExists(Id("1"), Password("ps_1")))
   }
+
+  // NG
 
   test("signed up name") {
     SignUpService.apply(SignUpRequest.valid)

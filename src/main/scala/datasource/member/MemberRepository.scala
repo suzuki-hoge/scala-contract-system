@@ -45,6 +45,12 @@ object MemberRepository {
     }
   }
 
+  def resignApplied(): List[Member] = {
+    _Database.db withSession { implicit session =>
+      members.filter(_.state === "resign applied").list.map(_Member.toMember)
+    }
+  }
+
   // insert
 
   def signUp(member: Member): Unit = {
@@ -55,15 +61,7 @@ object MemberRepository {
 
   // update
 
-  def resignApplication(member: Member): Unit = {
-    updateById(member.resignApplication())
-  }
-
-  def resignExecution(member: Member): Unit = {
-    updateById(member.resignExecution())
-  }
-
-  private def updateById(member: Member): Unit = {
+  def save(member: Member): Unit = {
     _Database.db withSession { implicit session =>
       members.filter(_.id === member.id.s).update(_Member.toRow(member))
     }
