@@ -1,7 +1,8 @@
 package datasource.member
 
+import java.time.{LocalDate, LocalDateTime}
+
 import domain.member._
-import util.Dummies
 
 import scala.slick.driver.SQLiteDriver.simple._
 
@@ -32,11 +33,17 @@ object Mapper {
       Member(
         Id(row._1),
         toName(row),
-        Dummies.eMail,
-        Dummies.gender,
-        Dummies.birthDate,
-        Dummies.address,
-        Dummies.contact,
+        EMail("e-mail@com"),
+        Gender("male"),
+        BirthDate(LocalDate.of(1990, 3, 25)),
+        Address(
+          ZipCode("140-0001"),
+          Street("品川")
+        ),
+        Contact(
+          Phone("090-1111-2222"),
+          Daytime("03-1111-2222")
+        ),
         Course(row._4),
         _State.toState(row._5)
       )
@@ -58,11 +65,25 @@ object Mapper {
 
     def toState(col: String): State = {
       col match {
-        case "contracted" => Dummies.state_contracted
-        case "resign applied" => Dummies.state_resignApplied
-        case _ => Dummies.state_resigned
+        case "contracted" => contracted
+        case "resign applied" => resignApplied
+        case _ => resigned
       }
     }
+
+    val contracted = ContractedState(
+      ContractedDateTime(LocalDateTime.now())
+    )
+
+    val resignApplied = ResignAppliedState(
+      contracted,
+      ResignAppliedDateTime(LocalDateTime.now())
+    )
+
+    val resigned = ResignedState(
+      resignApplied,
+      ResignedDateTime(LocalDateTime.now())
+    )
   }
 
 }

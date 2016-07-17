@@ -1,6 +1,6 @@
 package service.member
 
-import api.signup.Request
+import api.member.sign_up.Request
 import datasource.credit_card.CreditCardRepository
 import datasource.member.MemberRepository
 import domain.member.{Id, Password}

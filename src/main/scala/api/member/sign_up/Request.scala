@@ -1,8 +1,8 @@
-package api.signup
+package api.member.sign_up
 
-import util.Session
 import domain.credit_card.CreditCard
 import domain.member._
+import util.Session
 
 case class Request(
                     name: Name,
@@ -16,7 +16,7 @@ case class Request(
   def creator: Id => Member = {
     id => Member(
       id, name, EMail.create(requestMailAddress), gender, birthDate, address, contact, Course.basic,
-      ContractedState(ContractedDateTime(Session.now))
+      ContractedState(ContractedDateTime(Session.systemReceiptTime))
     )
   }
 }

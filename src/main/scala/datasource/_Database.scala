@@ -4,7 +4,6 @@ import java.io.File
 
 import datasource.credit_card.CreditCardRepository
 import datasource.member.MemberRepository
-import util.Dummies
 
 import scala.slick.driver.SQLiteDriver.simple._
 
@@ -26,7 +25,7 @@ object _Database {
 
       tables.foreach(_.ddl.create)
 
-      CreditCardRepository.validCreditCards += Dummies.creditCard_valid.number.s
+      CreditCardRepository.validCreditCards += "1111-2222-3333-4444"
     }
   }
 }

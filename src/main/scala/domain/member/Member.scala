@@ -1,8 +1,7 @@
 package domain.member
 
 import java.time.LocalDate
-
-import api.signup.RequestEMail
+import api.member.sign_up.RequestEMail
 import util.Session
 
 case class Member(
@@ -19,14 +18,14 @@ case class Member(
   def resignApplication(): Member = {
     Member(
       id, name, eMail, gender, birthDate, address, contact, course,
-      ResignAppliedState(state.contracted, ResignAppliedDateTime(Session.now))
+      ResignAppliedState(state.contracted, ResignAppliedDateTime(Session.systemReceiptTime))
     )
   }
 
   def resignExecution(): Member = {
     Member(
       id, name, eMail, gender, birthDate, address, contact, course,
-      ResignedState(state.resignApplied(), ResignedDateTime(Session.now))
+      ResignedState(state.resignApplied(), ResignedDateTime(Session.systemReceiptTime))
     )
   }
 }
@@ -58,7 +57,7 @@ case class Gender(s: String)
 // birth date
 case class BirthDate(v: LocalDate) {
   def isAdult: Boolean = {
-    true
+    LocalDate.now().getYear - v.getYear > 19
   }
 }
 
