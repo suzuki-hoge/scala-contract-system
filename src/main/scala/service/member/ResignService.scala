@@ -21,7 +21,7 @@ object ResignService {
 
   private def assertResignable(id: Id, password: Password): Unit = {
     assert(AccountRepository.isExists(id, password), "invalid id or password")
-    assert(MemberRepository.findOneBy(id).exists(_.state.isContracted), "invalid state for resign")
+    assert(MemberRepository.findOneBy(id).exists(_.state.resign.isEmpty), "invalid state for resign")
   }
 
   def executeAll(): Unit = {

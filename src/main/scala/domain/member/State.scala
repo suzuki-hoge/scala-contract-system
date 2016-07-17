@@ -2,41 +2,63 @@ package domain.member
 
 import java.time.LocalDateTime
 
-trait State {
-  def isContracted: Boolean
+import util.Session
 
-  def contracted: ContractedState
+case class State(signUp: SignUp, resign: Option[Resign]) {
+  def isResignApplied: Boolean = resign.exists(_.isApplied)
 
-  def isResignApplied: Boolean
+  def isResignExecuted: Boolean = resign.exists(!_.isApplied)
 
-  def resignApplied: () => ResignAppliedState
-}
+  def resignApply: State = State(
+    signUp,
+    signUp.resignApply
+  )
 
-case class ContractedState(dateTime: ContractedDateTime) extends State {
-  val isContracted = true
-  val contracted: ContractedState = this
-  val isResignApplied = false
-  val resignApplied: () => ResignAppliedState = () => throw new RuntimeException(
-    "contracted state has not resign applied state"
+  def resignExecute = State(
+    signUp,
+    resign.map(_.execute)
   )
 }
 
-case class ContractedDateTime(v: LocalDateTime)
+case object State {
+  def signUpApply: State = State(
+    SignUpApplied(SignUpAppliedDateTime(Session.systemReceiptTime)),
+    None
+  )
+}
 
-case class ResignAppliedState(before: ContractedState, dateTime: ResignAppliedDateTime) extends State {
-  val isContracted = false
-  val contracted: ContractedState = before
-  val isResignApplied = true
-  val resignApplied: () => ResignAppliedState = () => this
+trait SignUp {
+  def resignApply: Option[ResignApplied]
+}
+
+case class SignUpApplied(dateTime: SignUpAppliedDateTime) extends SignUp {
+  def resignApply = Some(ResignApplied(ResignAppliedDateTime(Session.systemReceiptTime)))
+}
+
+case class SignUpAppliedDateTime(v: LocalDateTime)
+
+
+trait Resign {
+  def isApplied: Boolean
+
+  def execute: ResignExecuted
+}
+
+case class ResignApplied(dateTime: ResignAppliedDateTime) extends Resign {
+  def isApplied = true
+
+  def execute = ResignExecuted(
+    this,
+    ResignExecutedDateTime(Session.systemReceiptTime)
+  )
 }
 
 case class ResignAppliedDateTime(v: LocalDateTime)
 
-case class ResignedState(before: ResignAppliedState, dateTime: ResignedDateTime) extends State {
-  val isContracted = false
-  val contracted: ContractedState = before.before
-  val isResignApplied = false
-  val resignApplied: () => ResignAppliedState = () => before
+case class ResignExecuted(before: ResignApplied, dateTime: ResignExecutedDateTime) extends Resign {
+  def isApplied = false
+
+  def execute = this
 }
 
-case class ResignedDateTime(v: LocalDateTime)
+case class ResignExecutedDateTime(v: LocalDateTime)

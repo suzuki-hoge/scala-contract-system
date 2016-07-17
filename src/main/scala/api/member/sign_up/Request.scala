@@ -12,11 +12,10 @@ case class Request(
                     address: Address,
                     contact: Contact,
                     creditCard: CreditCard
-                    ) {
+                  ) {
   def creator: Id => Member = {
     id => Member(
-      id, name, EMail.create(requestMailAddress), gender, birthDate, address, contact, Course.basic,
-      ContractedState(ContractedDateTime(Session.systemReceiptTime))
+      id, name, EMail.create(requestMailAddress), gender, birthDate, address, contact, Course.basic, State.signUpApply
     )
   }
 }

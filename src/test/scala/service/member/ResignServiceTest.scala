@@ -24,9 +24,10 @@ class ResignServiceTest extends FunSuite with BeforeAndAfter {
     // there is one member
     SignUpService.apply(SignUpRequest.valid)
 
-    // member is contracted
+    // my name
     assert(ResignService.refer(id, password).name == SignUpRequest.valid.name)
-    assert(MemberRepository.findOneBy(id).get.state.isContracted)
+
+    // member is NOT resign applied
     assert(!MemberRepository.findOneBy(id).get.state.isResignApplied)
   }
 
@@ -37,8 +38,7 @@ class ResignServiceTest extends FunSuite with BeforeAndAfter {
     // apply
     ResignService.apply(id, password)
 
-    // member is NOT contracted
-    assert(!MemberRepository.findOneBy(id).get.state.isContracted)
+    // member is resign applied
     assert(MemberRepository.findOneBy(id).get.state.isResignApplied)
   }
 
@@ -50,16 +50,18 @@ class ResignServiceTest extends FunSuite with BeforeAndAfter {
     // apply one only
     ResignService.apply(id2, password2)
 
-    // contracted and applied
-    assert(MemberRepository.findOneBy(id).get.state.isContracted)
+    // one applied
     assert(MemberRepository.findOneBy(id2).get.state.isResignApplied)
 
     // execute all for applied member
     ResignService.executeAll()
 
-    // contracted and NOT applied
-    assert(MemberRepository.findOneBy(id).get.state.isContracted)
+    // NOT applied
     assert(!MemberRepository.findOneBy(id2).get.state.isResignApplied)
+    assert(MemberRepository.findOneBy(id2).get.state.isResignExecuted)
+
+    // but other one is NOT executed
+    assert(!MemberRepository.findOneBy(id).get.state.isResignExecuted)
   }
 
   // NG

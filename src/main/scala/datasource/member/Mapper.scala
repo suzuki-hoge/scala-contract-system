@@ -56,33 +56,37 @@ object Mapper {
 
   object _State {
     def toCol(state: State): String = {
-      (state.isContracted, state.isResignApplied) match {
-        case (true, false) => "contracted"
-        case (false, true) => "resign applied"
-        case _ => "resigned"
+      (state.signUp, state.resign) match {
+        case (_, None) => "sign up applied"
+        case (_, Some(resign: ResignApplied)) => "resign applied"
+        case _ => "resign executed"
       }
     }
 
     def toState(col: String): State = {
       col match {
-        case "contracted" => contracted
-        case "resign applied" => resignApplied
-        case _ => resigned
+        case "sign up applied" => state_SignUpApplied
+        case "resign applied" => state_ResignApplied
+        case _ => state_ResignExecuted
       }
     }
 
-    val contracted = ContractedState(
-      ContractedDateTime(LocalDateTime.now())
+    val signUp = SignUpApplied(SignUpAppliedDateTime(LocalDateTime.now()))
+    val resignApplied = ResignApplied(ResignAppliedDateTime(LocalDateTime.now()))
+
+    val state_SignUpApplied = State(
+      signUp,
+      None
     )
 
-    val resignApplied = ResignAppliedState(
-      contracted,
-      ResignAppliedDateTime(LocalDateTime.now())
+    val state_ResignApplied = State(
+      signUp,
+      Some(resignApplied)
     )
 
-    val resigned = ResignedState(
-      resignApplied,
-      ResignedDateTime(LocalDateTime.now())
+    val state_ResignExecuted = State(
+      signUp,
+      Some(ResignExecuted(resignApplied, ResignExecutedDateTime(LocalDateTime.now())))
     )
   }
 

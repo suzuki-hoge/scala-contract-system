@@ -1,8 +1,8 @@
 package domain.member
 
 import java.time.LocalDate
+
 import api.member.sign_up.RequestEMail
-import util.Session
 
 case class Member(
                    id: Id,
@@ -17,15 +17,13 @@ case class Member(
                  ) {
   def resignApplication(): Member = {
     Member(
-      id, name, eMail, gender, birthDate, address, contact, course,
-      ResignAppliedState(state.contracted, ResignAppliedDateTime(Session.systemReceiptTime))
+      id, name, eMail, gender, birthDate, address, contact, course, state.resignApply
     )
   }
 
   def resignExecution(): Member = {
     Member(
-      id, name, eMail, gender, birthDate, address, contact, course,
-      ResignedState(state.resignApplied(), ResignedDateTime(Session.systemReceiptTime))
+      id, name, eMail, gender, birthDate, address, contact, course, state.resignExecute
     )
   }
 }
