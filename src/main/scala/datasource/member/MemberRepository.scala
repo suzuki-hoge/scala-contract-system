@@ -2,7 +2,6 @@ package datasource.member
 
 import datasource._Database
 import datasource.member.Mapper.{Row, _Member}
-import domain.account.Password
 import domain.member._
 
 import scala.slick.driver.SQLiteDriver.simple._
@@ -10,6 +9,8 @@ import scala.slick.driver.SQLiteDriver.simple._
 object MemberRepository {
 
   val members = TableQuery[_Member]
+
+  val noSuchMember: Id => RuntimeException = id => throw new RuntimeException("no such member: %s".format(id))
 
   // select
 

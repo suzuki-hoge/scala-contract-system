@@ -54,7 +54,7 @@ case class Gender(s: String)
 
 // birth date
 case class BirthDate(v: LocalDate) {
-  def isAdult: Boolean = {
+  def isAdult = {
     LocalDate.now().getYear - v.getYear > 19
   }
 }
@@ -74,9 +74,12 @@ case class Phone(s: String)
 case class Daytime(s: String)
 
 // course
-case class Course(s: String)
+case class Course(s: String) {
+  def isNiconico = s == "niconico"
+}
 
 case object Course {
-  def basic: Course = Course("basic")
+  def basic = Course("basic")
+  def niconico = Course("niconico")
 }
 

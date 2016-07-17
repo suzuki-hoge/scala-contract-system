@@ -4,7 +4,7 @@ import datasource._Database
 import datasource.account.AccountRepository
 import datasource.member.MemberRepository
 import domain.account.Password
-import domain.member.Id
+import domain.member.{Course, Id}
 import org.scalatest.{BeforeAndAfter, FunSuite}
 
 class SignUpServiceTest extends FunSuite with BeforeAndAfter {
@@ -15,22 +15,41 @@ class SignUpServiceTest extends FunSuite with BeforeAndAfter {
 
   // OK
 
-  test("sign up") {
+  test("basic sign up") {
+    // no member 1
     assert(!AccountRepository.isExists(Id("1"), Password("ps_1")))
 
-    SignUpService.apply(SignUpRequest.valid)
+    // apply
+    SignUpService.apply(SignUpRequest.basic)
 
-    assert(MemberRepository.findOneBy(Id("1")).get.name == SignUpRequest.valid.name)
+    // my name and basic and member 1
+    assert(MemberRepository.findOneBy(Id("1")).get.name == SignUpRequest.basic.name)
+    assert(MemberRepository.findOneBy(Id("1")).get.course == Course.basic)
+    assert(AccountRepository.isExists(Id("1"), Password("ps_1")))
+  }
+
+  test("niconico sign up") {
+    // no member 1
+    assert(!AccountRepository.isExists(Id("1"), Password("ps_1")))
+
+    // apply
+    SignUpService.apply(SignUpRequest.niconico)
+
+    // my name and niconico and member 1
+    assert(MemberRepository.findOneBy(Id("1")).get.name == SignUpRequest.niconico.name)
+    assert(MemberRepository.findOneBy(Id("1")).get.course == Course.niconico)
     assert(AccountRepository.isExists(Id("1"), Password("ps_1")))
   }
 
   // NG
 
   test("signed up name") {
-    SignUpService.apply(SignUpRequest.valid)
+    // sign up
+    SignUpService.apply(SignUpRequest.basic)
 
     val thrown = intercept[AssertionError] {
-      SignUpService.apply(SignUpRequest.valid)
+      // sign up twice
+      SignUpService.apply(SignUpRequest.basic)
     }
 
     assert(thrown.getMessage.endsWith("already signed up"))
@@ -38,6 +57,7 @@ class SignUpServiceTest extends FunSuite with BeforeAndAfter {
 
   test("minor") {
     val thrown = intercept[AssertionError] {
+      // under 20 years old request
       SignUpService.apply(SignUpRequest.invalidBirthDate)
     }
 
@@ -46,6 +66,7 @@ class SignUpServiceTest extends FunSuite with BeforeAndAfter {
 
   test("invalid credit card") {
     val thrown = intercept[AssertionError] {
+      // invalid credit card request
       SignUpService.apply(SignUpRequest.invalidCreditCard)
     }
 

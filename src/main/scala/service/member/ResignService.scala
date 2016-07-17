@@ -9,20 +9,24 @@ object ResignService {
   def refer(id: Id, password: Password): Member = {
     assertResignable(id, password)
 
-    MemberRepository.findOneBy(id, id => new RuntimeException("no such member: %s".format(id)))
+    MemberRepository.findOneBy(id, MemberRepository.noSuchMember)
   }
 
   def apply(id: Id, password: Password): Unit = {
     assertResignable(id, password)
 
-    val member = MemberRepository.findOneBy(id, id => new RuntimeException("no such member: %s".format(id)))
+    val member = MemberRepository.findOneBy(id, MemberRepository.noSuchMember)
 
     MemberRepository.save(member.resignApplication())
   }
 
   private def assertResignable(id: Id, password: Password): Unit = {
     assert(AccountRepository.isExists(id, password), "invalid id or password")
-    assert(MemberRepository.findOneBy(id).exists(_.state.resign.isEmpty), "invalid state for resign")
+
+    val member = MemberRepository.findOneBy(id, MemberRepository.noSuchMember)
+
+    assert(!member.state.isResignApplied, "invalid state for resign")
+    assert(!member.state.isResignExecuted, "no such member")
   }
 
   def executeAll(): Unit = {

@@ -23,10 +23,10 @@ class ResignServiceTest extends FunSuite with BeforeAndAfter {
 
   test("refer") {
     // there is one member
-    SignUpService.apply(SignUpRequest.valid)
+    SignUpService.apply(SignUpRequest.basic)
 
     // my name
-    assert(ResignService.refer(id, password).name == SignUpRequest.valid.name)
+    assert(ResignService.refer(id, password).name == SignUpRequest.basic.name)
 
     // member is NOT resign applied
     assert(!MemberRepository.findOneBy(id).get.state.isResignApplied)
@@ -34,7 +34,7 @@ class ResignServiceTest extends FunSuite with BeforeAndAfter {
 
   test("apply") {
     // there is one member
-    SignUpService.apply(SignUpRequest.valid)
+    SignUpService.apply(SignUpRequest.basic)
 
     // apply
     ResignService.apply(id, password)
@@ -45,8 +45,8 @@ class ResignServiceTest extends FunSuite with BeforeAndAfter {
 
   test("execute all") {
     // there are two members
-    SignUpService.apply(SignUpRequest.valid)
-    SignUpService.apply(SignUpRequest.valid2)
+    SignUpService.apply(SignUpRequest.basic)
+    SignUpService.apply(SignUpRequest.niconico)
 
     // apply one only
     ResignService.apply(id2, password2)
@@ -67,7 +67,9 @@ class ResignServiceTest extends FunSuite with BeforeAndAfter {
 
   // NG
 
-  test("refer authentication failure") {
+  test("authentication failure") {
+    // nobody sign up
+
     val thrown = intercept[AssertionError] {
       ResignService.refer(id, password)
     }
@@ -75,15 +77,32 @@ class ResignServiceTest extends FunSuite with BeforeAndAfter {
     assert(thrown.getMessage.endsWith("invalid id or password"))
   }
 
-  test("refer invalid state") {
-    SignUpService.apply(SignUpRequest.valid)
+  test("invalid state") {
+    // somebody sign up
+    SignUpService.apply(SignUpRequest.basic)
 
+    // but resign apply
     ResignService.apply(id, password)
 
     val thrown = intercept[AssertionError] {
-      ResignService.apply(id, password)
+      ResignService.refer(id, password)
     }
 
     assert(thrown.getMessage.endsWith("invalid state for resign"))
+  }
+
+  test("resigned") {
+    // somebody sign up
+    SignUpService.apply(SignUpRequest.basic)
+
+    // but resigned
+    ResignService.apply(Id("1"), Password("ps_1"))
+    ResignService.executeAll()
+
+    val thrown = intercept[AssertionError] {
+      ResignService.refer(id, password)
+    }
+
+    assert(thrown.getMessage.endsWith("no such member"))
   }
 }
